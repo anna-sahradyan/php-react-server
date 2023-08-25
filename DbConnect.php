@@ -13,7 +13,7 @@ class DbConnect
         $this->server = $_ENV['DB_HOST'];
         $this->port = $_ENV['DB_PORT'];
         $this->dbname = $_ENV['DB_DATABASE'];
-        $this->user = "root";
+        $this->user = $_ENV['DB_USERNAME'];
         $this->pass = $_ENV['DB_PASSWORD'];
 
     }

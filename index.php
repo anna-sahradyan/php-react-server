@@ -1,6 +1,6 @@
 <?php
- //Set CORS headers
-header("Access-Control-Allow-Origin: http://localhost:3000");
+//Set CORS headers
+header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
 header("Access-Control-Allow-Headers: Origin, Content-Type");
 
@@ -9,6 +9,14 @@ $objDb = new DbConnect;
 $conn = $objDb->connect();
 $method = $_SERVER["REQUEST_METHOD"];
 switch ($method) {
+    case "GET":
+        $sql = "SELECT * FROM users";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        echo json_encode($users);
+        break;
+
     case "POST":
         $user = json_decode(file_get_contents("php://input"), true);
         $sql = "INSERT INTO users (id,name, email, mobile, created_at) VALUES (null,:name, :email, :mobile, :created_at)";
@@ -23,6 +31,7 @@ switch ($method) {
         } else {
             $response = ["status" => 0, "message" => "Failed to create re."];
         }
+        echo json_encode($response);
         break;
 }
 
